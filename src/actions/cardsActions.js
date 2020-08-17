@@ -1,8 +1,2 @@
-import { ADD_CARD } from './actionType';
+import { ADD_CARD, DELETE_CARD } from './actionType';
 
-export const addCard = (listID, text) => {
-	return {
-		type: ADD_CARD,
-		payload: { text, listID },
-	};
-};

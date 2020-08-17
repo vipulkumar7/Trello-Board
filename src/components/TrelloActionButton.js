@@ -3,8 +3,8 @@ import { Icon, Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import { connect } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
-import { addList } from '../actions/listsActions';
-import { addCard } from '../actions/cardsActions';
+import { bindActionCreators } from 'redux';
+import * as actionCreator from '../actions/listsActions';
 
 class TrelloActionButton extends Component {
 	constructor(props) {
@@ -29,27 +29,26 @@ class TrelloActionButton extends Component {
 	};
 
 	handleAddList = () => {
-		const { dispatch } = this.props;
 		const { text } = this.state;
 
 		if (text) {
 			this.setState({
 				text: '',
 			});
-			dispatch(addList(text));
+			this.props.actionCreator.addList(text);
 		}
 		return;
 	};
 
 	handleAddCard = () => {
-		const { dispatch, listID } = this.props;
+		const { listID } = this.props;
 		const { text } = this.state;
 
 		if (text) {
 			this.setState({
 				text: '',
 			});
-			dispatch(addCard(listID, text));
+			this.props.actionCreator.addCard(listID, text);
 		}
 	};
 
@@ -141,4 +140,10 @@ const styles = {
 	},
 };
 
-export default connect()(TrelloActionButton);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		actionCreator: bindActionCreators(actionCreator, dispatch),
+	};
+};
+
+export default connect(null, mapDispatchToProps)(TrelloActionButton);

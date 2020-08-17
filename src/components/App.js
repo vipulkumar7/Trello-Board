@@ -3,8 +3,8 @@ import TrelloList from './TrelloList';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TrelloActionButton from './TrelloActionButton';
-import { sort } from '../actions/listsActions';
-
+import { bindActionCreators } from 'redux';
+import * as actionCreator from '../actions/listsActions';
 class App extends Component {
 	onDragEnd = (result) => {
 		const { destination, source, draggableId, type } = result;
@@ -12,8 +12,13 @@ class App extends Component {
 		if (!destination) {
 			return;
 		}
-		this.props.dispatch(
-			sort(source.droppableId, destination.droppableId, source.index, destination.index, draggableId, type)
+		this.props.actionCreator.sort(
+			source.droppableId,
+			destination.droppableId,
+			source.index,
+			destination.index,
+			draggableId,
+			type
 		);
 	};
 
@@ -54,4 +59,10 @@ const mapStateToProps = (state) => ({
 	lists: state.lists,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		actionCreator: bindActionCreators(actionCreator, dispatch),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

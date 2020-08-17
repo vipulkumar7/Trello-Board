@@ -1,47 +1,9 @@
-import { ADD_CARD, ADD_LIST, DRAG_HAPPENED } from '../actions/actionType';
-let listID = 2;
-let cardID = 6;
-// let listID = 0;
-// let cardID = 0;
+import { ADD_CARD, ADD_LIST, DRAG_HAPPENED, DELETE_CARD } from '../actions/actionType';
 
-const intialState = [
-	{
-		title: 'Last Episode',
-		id: `list-${0}`,
-		cards: [
-			{
-				id: `card-${0}`,
-				text: 'We created a static list and static card 1',
-			},
-			{
-				id: `card-${1}`,
-				text: 'We created a static list and static card 2',
-			},
-		],
-	},
-	{
-		title: 'This Episode',
-		id: `list-${1}`,
-		cards: [
-			{
-				id: `card-${2}`,
-				text: 'We created a static list and static card 1',
-			},
-			{
-				id: `card-${3}`,
-				text: 'We created a static list and static card 2',
-			},
-			{
-				id: `card-${4}`,
-				text: 'We created a static list and static card 3',
-			},
-			{
-				id: `card-${5}`,
-				text: 'We created a static list and static card 4',
-			},
-		],
-	},
-];
+let listID = 0;
+let cardID = 0;
+
+const intialState = [];
 const listsReducer = (state = intialState, action) => {
 	switch (action.type) {
 		case ADD_LIST: {
@@ -74,7 +36,7 @@ const listsReducer = (state = intialState, action) => {
 			return newState;
 		}
 
-		case DRAG_HAPPENED:
+		case DRAG_HAPPENED: {
 			const {
 				droppableIdStart,
 				droppableIdEnd,
@@ -114,6 +76,19 @@ const listsReducer = (state = intialState, action) => {
 				listEnd.cards.splice(droppableIndexEnd, 0, ...card);
 			}
 			return newState;
+		}
+
+		case DELETE_CARD: {
+			const { listID, id } = action.payload;
+			console.log(id);
+
+			const newCard = {
+				text: action.payload.text,
+				id: `card-${cardID}`,
+			};
+
+			console.log(newCard.id);
+		}
 
 		default:
 			return state;
